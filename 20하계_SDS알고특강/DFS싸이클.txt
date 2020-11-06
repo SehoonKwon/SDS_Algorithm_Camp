@@ -1,0 +1,34 @@
+<DFS 싸이클>
+visit, done 배열 모두 방문표시한다.
+싸이클의 유무는 visit배열로 방문했는지를 체크하고 방문했던 곳이면 싸이클
+마지막에 백트래킹으로 visit == false 시켜주고 해당지점이 가진 값 리턴
+
+int DFS(int x, int y)
+{
+	if (x < 0 || x >= M || y < 0 || y >= N || Array[y][x] == 0) return 0;
+
+	if (visit[y][x] == true)
+	{
+		cout << -1;
+		exit(0);
+	}
+	if (done[y][x] != -1) return done[y][x];
+
+	visit[y][x] = true;
+	done[y][x] = 1; //방문 노드 확인표시
+
+	for (int i = 0; i < 4; i++)
+	{
+		int nx = x + (dx[i] * Array[y][x]);
+		int ny = y + (dy[i] * Array[y][x]);
+
+		if (nx > -1 && nx < M && ny > -1 && ny < N)
+		{
+			if (Array[ny][nx] > 0)
+				done[y][x] = max(done[y][x], DFS(nx, ny) + 1);
+		}
+	}
+
+	visit[y][x] = false;
+	return done[y][x];
+}
